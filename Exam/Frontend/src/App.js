@@ -11,7 +11,7 @@ const App = (props) => {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/adddairy" component={AddDairy} />
-        <Route path="/update/:id"><UpdateDairy id={props.id}/></Route>
+        <Route path="/update/:id"><UpdateDairy key={props.id}/></Route>
       </Switch>
     </div>
   );
