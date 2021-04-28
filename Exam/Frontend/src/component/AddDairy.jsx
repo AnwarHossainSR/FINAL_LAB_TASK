@@ -48,7 +48,11 @@ function AddDairy() {
                 <br/>
                 
                 <label className="float-left">Importance</label>
-                <input type="text" value={importance} onChange={(e)=>setImportance(e.target.value)} className="form-control" />
+                <select name="importance" className="form-control" onChange={(e)=>setImportance(e.target.value)}>
+                  <option value="High">High</option>
+                  <option value="Moderate">Moderate</option>
+                  <option value="Less">Less</option>
+                </select>
                 <br/>
 
                 <button type="submit" onClick={submitHandle}  className="btn btn-info btn-block">Add Dairy</button>

@@ -1,26 +1,30 @@
 import React,{useEffect, useState} from 'react';
 import Header from './Header';
 import axios from "axios";
-
-
+import {useParams} from 'react-router-dom';
 
 function UpdateDairy(props) {
-    const [data, setData] = useState([]);
-
+   
+    const {id:eid}=useParams();
+    const [data, setData] = useState({});
+    const [message,setMessage]=useState('');
+    const [title,seTitle]=useState('');
+    const [description,setDescription]=useState('');
+    const [importance,setImportance]=useState('');
+    
     useEffect(async () => {
         axios
-        .post("events/"+props.match.params.id)
+        .get("events/"+eid)
         .then((response) => {
-          setData( response.data.event);
+          setData(response.data.event);
+          seTitle(response.data.event.title);
+          setDescription(response.data.event.description);
+          setImportance(response.data.event.importance);
         }).catch((err) => {
           setMessage( err.data );
         });
-    })
-    const [message,setMessage]=useState('');
-    const [title,seTitle]=useState(data.title);
-    const [description,setDescription]=useState(data.description);
-    const [importance,setImportance]=useState(data.importance);
-
+    },[])
+    
      async function handleSubmit (e) { 
         e.preventDefault();
         
@@ -29,9 +33,8 @@ function UpdateDairy(props) {
             'description':description,
             'importance':importance
           };
-          console.log(data)
           axios
-          .post("events/"+props.match.params.id, data)
+          .post("events/"+eid, data)
           .then((response) => {
             setMessage( response.data.message);
           }).catch((err) => {
@@ -51,19 +54,25 @@ function UpdateDairy(props) {
                 ) :''
                 }
                 <label className="float-left">Title</label>
-                <input type="text" value={title} onChange={(e)=>seTitle(e.target.value)} className="form-control" />
+                <input type="text" defaultValue={title} onChange={(e)=>seTitle(e.target.value)} className="form-control" />
 
                 <br/>
                 <label className="float-left">Description</label>
-                <input type="text" value={description} onChange={(e)=>setDescription(e.target.value)} className="form-control" />
+                <input type="text" defaultValue={description} onChange={(e)=>setDescription(e.target.value)} className="form-control" />
 
                 <br/>
                 
                 <label className="float-left">Importance</label>
-                <input type="text" value={importance} onChange={(e)=>setImportance(e.target.value)} className="form-control" />
+                <select name="importance" className="form-control" onChange={(e)=>setImportance(e.target.value)}>
+                  <option defaultValue={importance}>{importance}</option>
+                  <option value="High">High</option>
+                  <option value="Moderate">Moderate</option>
+                  <option value="Less">Less</option>
+                </select>
+                
                 <br/>
 
-                <button type="submit" onClick={handleSubmit}  className="btn btn-info btn-block">Add Dairy</button>
+                <button type="submit" onClick={handleSubmit}  className="btn btn-info btn-block">Update Dairy</button>
             </div>
         </>
     )

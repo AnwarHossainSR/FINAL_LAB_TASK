@@ -19,7 +19,7 @@ const Home = () => {
       const response = await axios
         .get("events")
         .catch((error) => console.log(error.resp));
-        setData(response.data.event);
+        setData(response.data.events);
     };
     getEvents();
   }

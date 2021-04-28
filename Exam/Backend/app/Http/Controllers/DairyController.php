@@ -12,7 +12,7 @@ class DairyController extends Controller
         try {
             $events = Event::all();
             return \response([
-                'event' => $events
+                'events' => $events
             ]);
         } catch (\Exception $th) {
             return \response(['message' => $th->getMessage()]);
@@ -40,11 +40,6 @@ class DairyController extends Controller
     {
         try {
             $event = Event::find($id);
-
-            $event->title = $req->title;
-            $event->description = $req->description;
-            $event->importance = $req->importance;
-            $event->save();
             return \response([
                 'event' => $event
             ]);
