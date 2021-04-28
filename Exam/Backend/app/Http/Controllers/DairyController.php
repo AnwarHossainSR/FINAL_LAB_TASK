@@ -29,12 +29,11 @@ class DairyController extends Controller
             $event->importance = $req->importance;
             $event->save();
             return \response([
-                'event' => $event
+                'message' => 'Diary added successfully'
             ]);
         } catch (\Exception $th) {
             return \response(['message' => $th->getMessage()]);
         }
-        
     }
 
     public function editEvent(Request $req,$id)
@@ -63,7 +62,7 @@ class DairyController extends Controller
             $event->importance = $req->importance;
             $event->save();
             return \response([
-                'event' => $event
+                'message' => 'Updated successfully'
             ]);
         } catch (\Exception $th) {
             return \response(['message' => $th->getMessage()]);

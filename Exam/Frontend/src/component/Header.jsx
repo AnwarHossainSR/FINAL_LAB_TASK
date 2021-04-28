@@ -1,6 +1,6 @@
 import React from "react";
-import { Navbar,Nav,NavDropdown } from 'react-bootstrap';
-import { Link,useHistory } from "react-router-dom";
+import { Navbar } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 
 const Header = () => {
 

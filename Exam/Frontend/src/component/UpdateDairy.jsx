@@ -1,17 +1,27 @@
-import React,{useState} from 'react';
-
+import React,{useEffect, useState} from 'react';
 import Header from './Header';
 import axios from "axios";
 
 
 
-function AddDairy() {
-    const [message,setMessage]=useState('');
-    const [title,seTitle]=useState('');
-    const [description,setDescription]=useState('');
-    const [importance,setImportance]=useState('');
+function UpdateDairy(props) {
+    const [data, setData] = useState([]);
 
-    async function submitHandle (e) { 
+    useEffect(async () => {
+        axios
+        .post("events/"+props.match.params.id)
+        .then((response) => {
+          setData( response.data.event);
+        }).catch((err) => {
+          setMessage( err.data );
+        });
+    })
+    const [message,setMessage]=useState('');
+    const [title,seTitle]=useState(data.title);
+    const [description,setDescription]=useState(data.description);
+    const [importance,setImportance]=useState(data.importance);
+
+     async function handleSubmit (e) { 
         e.preventDefault();
         
         const data = {
@@ -21,19 +31,21 @@ function AddDairy() {
           };
           console.log(data)
           axios
-          .post("events/store", data)
+          .post("events/"+props.match.params.id, data)
           .then((response) => {
             setMessage( response.data.message);
           }).catch((err) => {
             setMessage( err.data );
           });
         
-     }
+     } 
+
+
     return (
         <>
             <Header />
             <div className="col-md-4 offset-md-4">
-                <h1>Add Dairy</h1><br/>
+            <h1>Update Dairy</h1><br/>
                 {message != null ? (
                   <h4 className="text-center text-success">{message}</h4>
                 ) :''
@@ -51,9 +63,9 @@ function AddDairy() {
                 <input type="text" value={importance} onChange={(e)=>setImportance(e.target.value)} className="form-control" />
                 <br/>
 
-                <button type="submit" onClick={submitHandle}  className="btn btn-info btn-block">Add Dairy</button>
+                <button type="submit" onClick={handleSubmit}  className="btn btn-info btn-block">Add Dairy</button>
             </div>
         </>
     )
 }
-export default AddDairy;
+export default UpdateDairy;

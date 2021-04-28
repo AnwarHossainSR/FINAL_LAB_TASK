@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import Header from './Header'
+import { Table } from "react-bootstrap";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Link } from 'react-router-dom'
 
 const Home = () => {
 
-  const [data, setData] = useState([]);
+    const [data, setData] = useState([]);
   useEffect(() => {
     getData();
   }, []);
+  
 
   //Get Data
   async function getData() {
@@ -17,8 +19,7 @@ const Home = () => {
       const response = await axios
         .get("events")
         .catch((error) => console.log(error.resp));
-        console.log(response.data.events)
-        //setData(response.data.events);
+        setData(response.data.event);
     };
     getEvents();
   }
@@ -34,9 +35,10 @@ const Home = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
+          console.log(id);
         successMessage(id);
       }
-    });
+    }); 
   }
 
   async function successMessage(id) {
@@ -57,7 +59,7 @@ const Home = () => {
             <div className="row">
               <div className="col-md-10 offset-1">
                 <h1 className="text-center text-primary py-3">All Events</h1>
-                {/* <table id="example" striped hover>
+                <Table striped hover>
                   <thead>
                     <tr>
                       <th>Id</th>
@@ -69,7 +71,7 @@ const Home = () => {
                   </thead>
                   <tbody>
                     {data.map((item) => (
-                      <tr>
+                      <tr key={item.id}>
                         <td>{item.id}</td>
                         <td>{item.title}</td>
                         <td>{item.description}</td>
@@ -86,7 +88,7 @@ const Home = () => {
                       </tr>
                     ))}
                   </tbody>
-                </table> */}
+                </Table>
               </div>
             </div>
           </div>
